@@ -11,7 +11,7 @@ const PASSWORD = process.env.RPC_PASSWORD
 
 commands.forEach((command) => {
   let path = `/${command.name}`
-  if (command.params) path += `/${command.params}`
+  if (command.params) path += `/:${command.params}`
   if (command.name === 'scantxoutset') {
     router.get(path, async (req: Request, res: Response) => {
       const data = `{"jsonrpc": "1.0", "id": "curltest", "method": "${
