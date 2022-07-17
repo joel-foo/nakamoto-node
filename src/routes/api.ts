@@ -71,7 +71,15 @@ commands.forEach((command) => {
           headers: { 'content-type': 'text-plain' },
           data,
         })
-        const resp2 = await resp.data['result']
+        let resp2 = await resp.data['result']
+        if(route === 'blockchaininfo'){
+          resp2 = {
+            "blocks": resp2['blocks'],
+            "bestblockhash": resp2['bestblockhash'],
+            "difficulty": resp2['difficulty'],
+            "softforks": resp2['softforks'],
+          }
+        }
         if (!fields || !req.query.q) res.json(resp2)
         for (let f of fields) {
           if (req.query.q === f) res.json(resp2[f])
