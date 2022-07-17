@@ -1,51 +1,57 @@
-const commands = [
+type command = {
+  name: string
+  params: string[] | []
+  fields?: string[]
+}
+
+const commands: command[] = [
   {
-    name: 'getblockchaininfo',
-    params: '',
+    name: 'blockchaininfo',
+    params: [],
+    fields: [
+      'blockcount',
+      'bestblockhash',
+      'difficulty',
+      'softforks',
+      'mediantime',
+    ],
   },
   {
-    name: 'getblockcount',
-    params: '',
-  },
-  {
-    name: 'getdifficulty',
-    params: '',
-  },
-  {
-    name: 'getblockheader',
-    params: '',
+    name: 'blockheader',
+    params: ['blockhash'],
   },
   {
     name: 'gettxoutsetinfo',
-    params: 'blockhash',
+    params: [],
+    fields: ['transactions', 'txouts', 'total_amount'],
   },
   {
     name: 'getblockstats',
-    params: 'hash-height',
+    params: ['hash-height'],
   },
   {
     name: 'scantxoutset',
-    params: 'address',
+    params: ['addr', 'act-addr'],
   },
   {
     name: 'getmempoolinfo',
-    params: '',
+    params: [],
   },
   {
     name: 'getrawmempool',
-    params: '',
+    params: [],
   },
   {
     name: 'gettxout',
-    params: 'txid',
+    params: ['txid', 'vout'],
   },
   {
     name: 'getblock',
-    params: 'blockhash',
+    params: ['blockhash'],
   },
   {
     name: 'getblockhash',
-    params: 'blockheight',
+    params: ['blockheight'],
   },
 ]
 

@@ -10,13 +10,20 @@ const USER = process.env.RPC_USER
 const PASSWORD = process.env.RPC_PASSWORD
 
 commands.forEach((command) => {
-  let path = `/${command.name}`
-  if (command.params) path += `/:${command.params}`
+  const { name, params, fields } = command
+  let path = `/${name}`
+  if (params.length !== 0) {
+    for (let p of params) {
+      path += `/${p}`
+    }
+  }
   if (command.name === 'scantxoutset') {
     router.get(path, async (req: Request, res: Response) => {
       const data = `{"jsonrpc": "1.0", "id": "curltest", "method": "${
         command.name
-      }", "params": ["start '["addr(${req.params[command.params]})"]'"]}`
+      }", "params": ["start '["${req.params[params[0]]}(${
+        req.params[params[1]]
+      })"]'"]}`
       try {
         const resp = await axios({
           method: 'POST',
@@ -32,9 +39,15 @@ commands.forEach((command) => {
     })
   } else {
     router.get(path, async (req: Request, res: Response) => {
+      const arr = []
+      if (params.length !== 0) {
+        for (let p of params) {
+          arr.push(req.params[p])
+        }
+      }
       const data = `{"jsonrpc": "1.0", "id": "curltest", "method": "${
         command.name
-      }", "params": ["${req.params[command.params]}"]}`
+      }", "params": ${JSON.stringify(arr)}}`
       try {
         const resp = await axios({
           method: 'POST',
@@ -43,7 +56,13 @@ commands.forEach((command) => {
           data,
         })
         const resp2 = await resp.data
-        res.json(resp2)
+        const modifiedResp = resp2['result']
+        if (!fields || !req.query.q) res.json(modifiedResp)
+        for (let f of fields) {
+          if (req.query.q === f) res.json({ f: modifiedResp[f] })
+        }
+        //if req.query.q is some garbage
+        res.json(modifiedResp)
       } catch (e) {
         res.status(404).send(e.data)
       }

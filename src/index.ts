@@ -11,6 +11,7 @@ app.use('/api', routes)
 
 const PORT = process.env.PORT || 3000
 
+//send client page
 app.get('/', (req: Request, res: Response) => {
   res.send('hi!')
 })
