@@ -1,5 +1,4 @@
 import express, { Request, Response } from 'express'
-import axios from 'axios'
 import bodyParser from 'body-parser'
 import routes from './routes/api'
 

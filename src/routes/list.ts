@@ -1,58 +1,67 @@
 type command = {
-  name: string
+  rpcMtd: string
+  route:string
   params: string[] | []
   fields?: string[]
 }
 
 const commands: command[] = [
   {
-    name: 'blockchaininfo',
+    rpcMtd: 'getblock',
+    route: 'block',
+    params: ['hashorheight'],
+  },
+  {
+    rpcMtd: 'getblockheader',
+    route: 'header',
+    params: ['hashorheight'],
+  },
+    {
+    rpcMtd: 'getblockstats',
+    route: 'blockstats',
+    params: ['hashorheight'],
+  },
+  {
+    rpcMtd: 'getblockchaininfo',
+    route: 'blockchaininfo',
     params: [],
     fields: [
-      'blockcount',
+      'blocks',
       'bestblockhash',
       'difficulty',
       'softforks',
-      'mediantime',
     ],
   },
   {
-    name: 'blockheader',
-    params: ['blockhash'],
+    rpcMtd: 'scantxoutset',
+    route: 'txoutset',
+    params: ['type', 'addr'],
   },
   {
-    name: 'gettxoutsetinfo',
-    params: [],
-    fields: ['transactions', 'txouts', 'total_amount'],
-  },
-  {
-    name: 'getblockstats',
-    params: ['hash-height'],
-  },
-  {
-    name: 'scantxoutset',
-    params: ['addr', 'act-addr'],
-  },
-  {
-    name: 'getmempoolinfo',
-    params: [],
-  },
-  {
-    name: 'getrawmempool',
-    params: [],
-  },
-  {
-    name: 'gettxout',
+    rpcMtd: 'gettxout',
+    route: 'txout',
     params: ['txid', 'vout'],
   },
   {
-    name: 'getblock',
-    params: ['blockhash'],
+    rpcMtd: 'gettxoutsetinfo',
+    route: 'alltxoutset',
+    params: []
   },
   {
-    name: 'getblockhash',
-    params: ['blockheight'],
+    rpcMtd: 'getmempoolinfo',
+    route: 'mempoolinfo',
+    params: [],
   },
+  {
+    rpcMtd: 'getrawmempool',
+    route: 'rawmempool',
+    params: [],
+  },
+  {
+    rpcMtd: 'getblockhash',
+    route: 'blockhash',
+    params: ['height']
+  }
 ]
 
 export default commands
