@@ -66,16 +66,16 @@ commands.forEach((command) => {
         })
         let resp2 = await resp.data['result']
         if (route === 'blockchaininfo') {
-          const res = await axios('http://localhost:3000/api/getmininginfo')
-          const data = await res.data
+          const res = await axios('http://localhost:3000/api/mininginfo')
+          const miningInfo = await res.data
           resp2 = {
             blocks: resp2['blocks'],
             headers: resp2['blocks'],
             bestblockhash: resp2['bestblockhash'],
             difficulty: resp2['difficulty'],
+            networkhashps: miningInfo['networkhashps'],
+            pooledtx: miningInfo['pooledtx'],
             softforks: resp2['softforks'],
-            networkhashps: data['networkhashps'],
-            pooledtx: data['pooledtx'],
           }
         }
         if (route === 'alltxoutset') {
