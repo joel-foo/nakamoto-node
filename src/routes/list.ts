@@ -1,6 +1,6 @@
 type command = {
   rpcMtd: string
-  route:string
+  route: string
   params: string[] | []
   fields?: string[]
 }
@@ -16,7 +16,7 @@ const commands: command[] = [
     route: 'header',
     params: ['hashorheight'],
   },
-    {
+  {
     rpcMtd: 'getblockstats',
     route: 'blockstats',
     params: ['hashorheight'],
@@ -25,12 +25,7 @@ const commands: command[] = [
     rpcMtd: 'getblockchaininfo',
     route: 'blockchaininfo',
     params: [],
-    fields: [
-      'blocks',
-      'bestblockhash',
-      'difficulty',
-      'softforks',
-    ],
+    fields: ['blocks', 'bestblockhash', 'difficulty', 'softforks'],
   },
   {
     rpcMtd: 'scantxoutset',
@@ -45,7 +40,7 @@ const commands: command[] = [
   {
     rpcMtd: 'gettxoutsetinfo',
     route: 'alltxoutset',
-    params: []
+    params: [],
   },
   {
     rpcMtd: 'getmempoolinfo',
@@ -60,8 +55,13 @@ const commands: command[] = [
   {
     rpcMtd: 'getblockhash',
     route: 'blockhash',
-    params: ['height']
-  }
+    params: ['height'],
+  },
+  {
+    rpcMtd: 'getmininginfo',
+    route: 'mininginfo',
+    params: [],
+  },
 ]
 
 export default commands
