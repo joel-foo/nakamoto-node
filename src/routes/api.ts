@@ -17,16 +17,13 @@ commands.forEach((command) => {
       path += `/:${p}`
     }
   }
-  console.log(path)
   if (route === 'txoutset') {
     router.get(path, async (req: Request, res: Response) => {
-      console.log(req.params[params[0]], req.params[params[1]])
       const data = `{"jsonrpc": "1.0", "id": "curltest", "method": "${
         rpcMtd
       }", "params": ["start", ["${req.params[params[0]]}(${
         req.params[params[1]]
       })"]]}`
-      console.log(data)
       try {
         const resp = await axios({
           method: 'POST',
@@ -34,7 +31,8 @@ commands.forEach((command) => {
           headers: { 'content-type': 'text-plain' },
           data,
         })
-        const resp2 = await resp.data
+        const resp2 = await resp.data['result']
+        delete resp2['success']
         res.json(resp2)
       } catch (e) {
         console.log(e.data)
@@ -63,7 +61,6 @@ commands.forEach((command) => {
       const data = `{"jsonrpc": "1.0", "id": "curltest", "method": "${
         rpcMtd
       }", "params": ${JSON.stringify(arr)}}`
-      console.log(data)
       try {
         const resp = await axios({
           method: 'POST',
@@ -78,6 +75,12 @@ commands.forEach((command) => {
             "bestblockhash": resp2['bestblockhash'],
             "difficulty": resp2['difficulty'],
             "softforks": resp2['softforks'],
+          }
+        }
+        if(route === 'alltxoutset'){
+          const toRemove = ['height', 'bestblock', 'bogosize', 'hash_serialized_2', 'disk_size']
+          for(const f of toRemove){
+            delete resp2[f]
           }
         }
         if (!fields || !req.query.q) res.json(resp2)
