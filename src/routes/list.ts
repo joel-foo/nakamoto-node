@@ -72,7 +72,16 @@ const commands: command[] = [
     rpcMtd: 'getblockchaininfo',
     route: 'blockchaininfo',
     params: [],
-    fields: ['blocks', 'bestblockhash', 'difficulty', 'softforks'],
+    fields: [
+      'blocks',
+      'headers',
+      'bestblockhash',
+      'difficulty',
+      'softforks',
+      'networkhashps',
+      'pooledtx',
+      'mediantime',
+    ],
   },
   {
     rpcMtd: 'scantxoutset',

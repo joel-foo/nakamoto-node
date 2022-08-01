@@ -96,9 +96,9 @@ commands.forEach((command) => {
           }
         }
         if (!fields || !req.query) res.json(resp2)
-        let processedResp: respType = {}
-        for (const f of fields) {
-          for (let i = 1; i <= Math.min(10, Object.keys(resp2).length); i++) {
+        let processedResp = {} as respType
+        for (let i = 1; i <= Object.keys(resp2).length; i++) {
+          for (const f of fields) {
             if (f === req.query[`q${i}`]) processedResp[f] = resp2[f]
           }
         }
