@@ -8,6 +8,10 @@ const router = express.Router()
 const USER = process.env.RPC_USER
 const PASSWORD = process.env.RPC_PASSWORD
 
+type respType = {
+  [key: string]: string | number | Object
+}
+
 commands.forEach((command) => {
   const { rpcMtd, route, params, fields } = command
   let path = `/${route}`
@@ -70,7 +74,8 @@ commands.forEach((command) => {
           const miningInfo = await res.data
           resp2 = {
             blocks: resp2['blocks'],
-            headers: resp2['blocks'],
+            headers: resp2['headers'],
+            mediantime: resp2['mediantime'],
             bestblockhash: resp2['bestblockhash'],
             difficulty: resp2['difficulty'],
             networkhashps: miningInfo['networkhashps'],
@@ -90,11 +95,15 @@ commands.forEach((command) => {
             delete resp2[f]
           }
         }
-        if (!fields || !req.query.q) res.json(resp2)
-        for (let f of fields) {
-          if (req.query.q === f) res.json(resp2[f])
+        if (!fields || !req.query) res.json(resp2)
+        let processedResp: respType = {}
+        for (const f of fields) {
+          for (let i = 1; i <= Math.min(10, Object.keys(resp2).length); i++) {
+            if (f === req.query[`q${i}`]) processedResp[f] = resp2[f]
+          }
         }
-        //if req.query.q is some garbage
+        if (Object.keys(processedResp).length !== 0) res.json(processedResp)
+        //if req.query contains garbage
         res.json(resp2)
       } catch (e) {
         res.status(404).send(e.data)
