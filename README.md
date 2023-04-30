@@ -14,6 +14,9 @@ echo -e "RPC_USER=${user}\nRPC_PASSWORD=${password}" >> .env
 
 npm i && npm run build
 
-# To run as background service, else 'npm run start' will suffice
+# To run as background service, else 'npm run start' will suffice 
 nohup npm run start >/dev/null 2>&1 &
+
+# OR recommended:
+forever start -c "npm start" ./ 
 ```
